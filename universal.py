@@ -38,9 +38,9 @@ args["target_id"] = 23
 
 
 args["lr_idx"] = 0
-args["lr"] = 0.002
+args["lr"] = 0.1
 args["constraint"] = 'cons'
-args["mode"] = "ZOAdaMM" # ['ZOSMD', 'ZOPSGD', 'ZONES', 'ZOAdaMM']
+args["mode"] = "ZONES" # ['ZOSMD', 'ZOPSGD', 'ZONES', 'ZOAdaMM']
 
 
 def main(args):

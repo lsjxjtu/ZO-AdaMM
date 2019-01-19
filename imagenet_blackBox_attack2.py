@@ -36,12 +36,12 @@ args["mu"] = 0.005  ### key parameter: smoothing parameter in ZO gradient estima
 args["mini_batch_sz"] = 10
 args["img_id"] = 11
 args["target_id"] = 23
-args["image_number"] = 50
+args["image_number"] = 100
 
 args["lr_idx"] = 0
-args["lr"] = 0.001  #0.02 for uncons
-args["constraint"] = 'uncons' #'uncons'
-args["mode"] = "ZOSCD" 
+args["lr"] = 0.0001  #0.02 for uncons
+args["constraint"] = 'cons' #'uncons'
+args["mode"] = "ZOAdaMM" 
 #alg_dic['uncons'] = ['ZOSGD', 'ZOSCD', 'ZOsignSGD', 'ZOAdaMM']
 #alg_dic['cons'] = ['ZOSMD', 'ZOPSGD', 'ZONES', 'ZOAdaMM']
 
@@ -77,7 +77,7 @@ def main(args):
         
         
         succ_count, ii, iii = 0, 0, 0
-        best_distortion_count,first_iteration_count, first_distortion_count = [], [], []
+        final_distortion_count,first_iteration_count, first_distortion_count = [], [], []
         while iii < args["image_number"]:
             ii = ii + 1
             image_id = image_id_set[ii]
@@ -162,7 +162,7 @@ def main(args):
                 m = np.zeros((1, d))
                 # momentum parameter for first and second order moment
                 beta_1 = 0.9
-                beta_2 = 0.3  # only used by AMSGrad
+                beta_2 = 0.9  # only used by AMSGrad
                 print(beta_1, beta_2)
     
             #for i in tqdm(range(I)):
@@ -358,7 +358,7 @@ def main(args):
     
                 ## save data
                 succ_count = succ_count + 1 
-                best_distortion_count.append(best_distortion)
+                final_distortion_count.append(l2s_loss_all[-1])
                 first_distortion_count.append(first_distortion)
                 first_iteration_count.append(first_iteration)
                 suffix0 = "retperimage/id_{}_Mode_{}_{}_lr_{}_decay_{}_case{}_per".format(image_id, arg_mode, args["constraint"], args["lr"], int(args["decay_lr"]), args["exp_code"] )
@@ -380,7 +380,7 @@ def main(args):
     print('succ rate:', succ_count/args["image_number"])
     print('average first success l2', np.mean(first_distortion_count))
     print('average first itrs', np.mean(first_iteration_count))
-    print('average l2:', np.mean(best_distortion_count), ' best l2:', np.min(best_distortion_count), ' worst l2:', np.max(best_distortion_count))
+    print('average l2:', np.mean(final_distortion_count), ' best l2:', np.min(final_distortion_count), ' worst l2:', np.max(final_distortion_count))
     
     
 # f: objection function
