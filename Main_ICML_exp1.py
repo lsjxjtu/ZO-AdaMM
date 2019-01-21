@@ -1,4 +1,3 @@
-###  Sijia Liu, 12/22/2018
 ###  Application to find adversarial perturbation per image
 
 import matplotlib
